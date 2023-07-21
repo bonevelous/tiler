@@ -1,0 +1,3 @@
+/home/bonevelous/Documents/code/tiler/CMakeFiles/tiler.dir
+/home/bonevelous/Documents/code/tiler/CMakeFiles/edit_cache.dir
+/home/bonevelous/Documents/code/tiler/CMakeFiles/rebuild_cache.dir
