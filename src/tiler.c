@@ -42,7 +42,7 @@ SDL_Rect img_src = {0, 0, 16, 16};
 SDL_Rect img_dst = {0, 0, 16, 16};
 SDL_Event event;
 
-int tiler_init() {
+int tiler_init(const char *_tilefile) {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		printf("%s\n", SDL_GetError());
 		return -1;
@@ -60,7 +60,11 @@ int tiler_init() {
 		return 1;
 	}
 
-	tileimg = load_tile("./src/data/tile0.bmp");
+	if (_tilefile == NULL) {
+		tileimg = load_tile("./src/data/tile0.bmp");
+	} else {
+		tileimg = load_tile(_tilefile);
+	}
 	if (tileimg == NULL) return 1;
 	SDL_QueryTexture(tileimg, NULL, NULL, &img_src.w, &img_src.h);
 	SDL_QueryTexture(tileimg, NULL, NULL, &img_dst.w, &img_dst.h);

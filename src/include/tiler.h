@@ -25,12 +25,13 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <math.h>
+#include <magic.h>
 
 #include <tconf.h>
 
 #include <SDL.h>
 
-int tiler_init();
+int tiler_init(const char *_tilefile);
 void tiler_render();
 void tiler_pollevent();
 void tiler_clean();

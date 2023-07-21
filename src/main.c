@@ -30,6 +30,7 @@ static struct option longopt[] = {
 
 int gameloop = 1;
 const int framerate = 50000000;
+const char *tilefile = NULL;
 
 void printinst() {
 	printf("%s\n", INSTRUCTIONS);
@@ -58,18 +59,24 @@ int main (int argc, char **argv) {
 
 	if (argc > 1) {
 		for (int i = 1; i < argc; i ++) {
-			test = fopen(argv[i], "r");
-			if (test == NULL) {
-				printf("File %s does not exist.\n", argv[i]);
+			if (tilefile == NULL) {
+				test = fopen(argv[i], "r");
+				if (test == NULL) {
+					printf("File %s does not exist.\n", argv[i]);
+				} else {
+					printf("File %s found.\n", argv[i]);
+					fclose(test);
+					test = NULL;
+
+					tilefile = argv[i];
+				}
 			} else {
-				printf("File %s found.\n", argv[i]);
-				fclose(test);
-				test = NULL;
+				printf("File already found, skipping %s...\n", argv[i]);
 			}
 		}
 	}
 
-	if (tiler_init() != 0) return -1;
+	if (tiler_init(tilefile) != 0) return -1;
 
 	while (gameloop == 1) {
 		for (int i = 0; i < framerate; i++) {
