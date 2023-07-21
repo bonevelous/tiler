@@ -111,7 +111,6 @@ void tiler_keyboard() {
 
 	if (keystate[SDL_SCANCODE_UP]) offsety -= mvspd;
 	if (offsety < 0) offsety = img_src.h - 1 + (offsety % img_src.h);
-
 }
 
 void tiler_render() {

@@ -54,6 +54,21 @@ int main (int argc, char **argv) {
 			break;
 	}
 
+	FILE *test = NULL;
+
+	if (argc > 1) {
+		for (int i = 1; i < argc; i ++) {
+			test = fopen(argv[i], "r");
+			if (test == NULL) {
+				printf("File %s does not exist.\n", argv[i]);
+			} else {
+				printf("File %s found.\n", argv[i]);
+				fclose(test);
+				test = NULL;
+			}
+		}
+	}
+
 	if (tiler_init() != 0) return -1;
 
 	while (gameloop == 1) {
