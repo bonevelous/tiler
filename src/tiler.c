@@ -60,14 +60,12 @@ int tiler_init(const char *_tilefile) {
 		return 1;
 	}
 
-	if (_tilefile == NULL) {
-		tileimg = load_tile("./src/data/tile0.bmp");
-	} else {
+	if (_tilefile != NULL) {
 		tileimg = load_tile(_tilefile);
+		if (tileimg == NULL) return 1;
+		SDL_QueryTexture(tileimg, NULL, NULL, &img_src.w, &img_src.h);
+		SDL_QueryTexture(tileimg, NULL, NULL, &img_dst.w, &img_dst.h);
 	}
-	if (tileimg == NULL) return 1;
-	SDL_QueryTexture(tileimg, NULL, NULL, &img_src.w, &img_src.h);
-	SDL_QueryTexture(tileimg, NULL, NULL, &img_dst.w, &img_dst.h);
 
 	printinst();
 
@@ -95,14 +93,13 @@ SDL_Texture *load_tile(const char *filename) {
 	return _tex;
 }
 
+bool ctrlmode = false;
+
 void tiler_keyboard() {
 	const uint8_t *keystate = SDL_GetKeyboardState(NULL);
 
-	if (keystate[SDL_SCANCODE_LSHIFT]) {
-		mvspd = 8;
-	} else {
-		mvspd = 1;
-	}
+	mvspd = (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) ? 8 : 1;
+	ctrlmode = (keystate[SDL_SCANCODE_LCTRL] || keystate[SDL_SCANCODE_RCTRL]) ? true : false;
 
 	if (keystate[SDL_SCANCODE_RIGHT]) offsetx += mvspd;
 	if (offsetx >= img_src.w) offsetx = 0 + (offsetx % img_src.w);
@@ -115,9 +112,17 @@ void tiler_keyboard() {
 
 	if (keystate[SDL_SCANCODE_UP]) offsety -= mvspd;
 	if (offsety < 0) offsety = img_src.h - 1 + (offsety % img_src.h);
+
+	//if (ctrlmode && keystate[SDL_SCANCODE_L])
 }
 
-void tiler_render() {
+void tiler_render_term() {
+	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+
+	
+}
+
+void tiler_render_main() {
 	SDL_GetWindowSize(win, &winw, &winh);
 
 	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
@@ -129,7 +134,12 @@ void tiler_render() {
 		img_dst.x = (i * img_src.w) + offsetx;
 		for (int j = -1; j <= tiley; j++) {
 			img_dst.y = (j * img_src.h) + offsety;
-			SDL_RenderCopy(ren, tileimg, &img_src, &img_dst);
+			if (tileimg != NULL) {
+				SDL_RenderCopy(ren, tileimg, &img_src, &img_dst);
+			} else {
+				SDL_SetRenderDrawColor(ren, 0, 0, 255, 255);
+				SDL_RenderDrawRect(ren, &img_dst);
+			}
 		}
 	}
 
@@ -164,8 +174,10 @@ void tiler_pollevent() {
 }
 
 void tiler_clean() {
-	SDL_DestroyTexture(tileimg);
-	tileimg = NULL;
+	if (tileimg != NULL) {
+		SDL_DestroyTexture(tileimg);
+		tileimg = NULL;
+	}
 
 	SDL_DestroyRenderer(ren);
 	ren = NULL;

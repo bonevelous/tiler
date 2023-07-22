@@ -28,7 +28,7 @@ static struct option longopt[] = {
 	{0, 0, 0, 0}
 };
 
-int gameloop = 1;
+bool gameloop = true;
 const int framerate = 50000000;
 const char *tilefile = NULL;
 
@@ -78,12 +78,12 @@ int main (int argc, char **argv) {
 
 	if (tiler_init(tilefile) != 0) return -1;
 
-	while (gameloop == 1) {
+	while (gameloop == true) {
 		for (int i = 0; i < framerate; i++) {
 			if (i == 0) {
 				tiler_pollevent();
 				tiler_keyboard();
-				tiler_render();
+				tiler_render_main();
 			}
 		}
 	}

@@ -23,8 +23,10 @@
 
 
 #include <stdio.h>
-#include <getopt.h>
 #include <math.h>
+#include <stdbool.h>
+
+#include <getopt.h>
 #include <magic.h>
 
 #include <tconf.h>
@@ -32,7 +34,8 @@
 #include <SDL.h>
 
 int tiler_init(const char *_tilefile);
-void tiler_render();
+void tiler_render_main();
+void tiler_render_term();
 void tiler_pollevent();
 void tiler_clean();
 void tiler_keyboard();

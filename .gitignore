@@ -1,3 +1,5 @@
 tiler
 Makefile
 *.o
+CMakeFiles/*
+
