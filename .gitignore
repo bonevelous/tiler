@@ -1,5 +1,6 @@
 tiler
 Makefile
 *.o
-CMakeFiles/*
-
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake

@@ -38,6 +38,7 @@ int mvspd = 1;
 SDL_Window *win = NULL;
 SDL_Renderer *ren = NULL;
 SDL_Texture *tileimg = NULL;
+SDL_Texture *dostext = NULL;
 SDL_Rect img_src = {0, 0, 16, 16};
 SDL_Rect img_dst = {0, 0, 16, 16};
 SDL_Event event;
@@ -93,13 +94,10 @@ SDL_Texture *load_tile(const char *filename) {
 	return _tex;
 }
 
-bool ctrlmode = false;
-
 void tiler_keyboard() {
 	const uint8_t *keystate = SDL_GetKeyboardState(NULL);
 
 	mvspd = (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) ? 8 : 1;
-	ctrlmode = (keystate[SDL_SCANCODE_LCTRL] || keystate[SDL_SCANCODE_RCTRL]) ? true : false;
 
 	if (keystate[SDL_SCANCODE_RIGHT]) offsetx += mvspd;
 	if (offsetx >= img_src.w) offsetx = 0 + (offsetx % img_src.w);
@@ -112,14 +110,13 @@ void tiler_keyboard() {
 
 	if (keystate[SDL_SCANCODE_UP]) offsety -= mvspd;
 	if (offsety < 0) offsety = img_src.h - 1 + (offsety % img_src.h);
-
-	//if (ctrlmode && keystate[SDL_SCANCODE_L])
 }
 
 void tiler_render_term() {
 	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 
-	
+	SDL_RenderClear(ren);
+	SDL_RenderPresent(ren);
 }
 
 void tiler_render_main() {

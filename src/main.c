@@ -22,7 +22,6 @@
 #include <tmesg.h>
 
 static struct option longopt[] = {
-	//{"file", 1, 0, 'f'},
 	{"help", 0, 0, 'h'},
 	{"version", 0, 0, 'v'},
 	{0, 0, 0, 0}
@@ -32,14 +31,11 @@ bool gameloop = true;
 const int framerate = 50000000;
 const char *tilefile = NULL;
 
-void printinst() {
-	printf("%s\n", INSTRUCTIONS);
-}
+void printinst() { printf("%s\n", INSTRUCTIONS); }
 
 int main (int argc, char **argv) {
 	int curind = 0;
 
-	//int curopt = getopt_long(argc, argv, "f:hv", longopt, &curind);
 	int curopt = getopt_long(argc, argv, "hv", longopt, &curind);
 	switch (curopt) {
 		case 'h':
